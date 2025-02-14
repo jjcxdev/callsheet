@@ -8,7 +8,6 @@ import { Talent } from "@/components/sections/talent";
 import { Vendors } from "@/components/sections/vendors";
 import { Notes } from "@/components/sections/notes";
 import { initializeUtils } from "@/constants/ui";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Production } from "@/components/sections/production";
 import { LocationWeather } from "@/components/sections/location-weather";
@@ -53,5 +52,3 @@ export default function InputForm({ data, onChange }: InputFormProps) {
     </div>
   );
 }
-
-// invoice email, docket, job name together
