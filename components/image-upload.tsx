@@ -59,9 +59,9 @@ export function ImageUpload({ id, label, value, onChange }: ImageUploadProps) {
           onChange={handleFileChange}
         />
         {preview ? (
-          <div className="relative w-full h-40">
+          <div className="relative h-40 w-full">
             <Image src={preview} alt={label} fill className="object-contain" />
-            <div className="absolute top-2 right-2 max-w-[120px]">
+            <div className="absolute right-2 top-2 max-w-[120px]">
               <Button
                 type="button"
                 variant="destructive"
@@ -77,7 +77,7 @@ export function ImageUpload({ id, label, value, onChange }: ImageUploadProps) {
           <Button
             type="button"
             onClick={handleClick}
-            className="w-full truncate text-xs"
+            className="w-full truncate"
           >
             Upload Image
           </Button>

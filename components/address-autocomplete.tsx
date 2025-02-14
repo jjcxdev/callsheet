@@ -42,7 +42,7 @@ export function AddressAutocomplete({
         new google.maps.places.AutocompleteService();
       const dummyElement = document.createElement("div");
       placesService.current = new google.maps.places.PlacesService(
-        dummyElement
+        dummyElement,
       );
       sessionToken.current = new google.maps.places.AutocompleteSessionToken();
     });
@@ -79,7 +79,7 @@ export function AddressAutocomplete({
             setSuggestions(predictions);
             setShowSuggestions(true);
           }
-        }
+        },
       );
     }
   };
@@ -119,7 +119,7 @@ export function AddressAutocomplete({
             setInputValue(
               place.name
                 ? `${place.name}, ${addressWithoutCountry}`
-                : addressWithoutCountry
+                : addressWithoutCountry,
             );
             onAddressSelect({
               name: place.name || undefined,
@@ -128,7 +128,7 @@ export function AddressAutocomplete({
               coordinates,
             });
           }
-        }
+        },
       );
     }
   };
@@ -140,7 +140,7 @@ export function AddressAutocomplete({
       case "ArrowDown":
         e.preventDefault();
         setSelectedIndex((prev) =>
-          prev < suggestions.length - 1 ? prev + 1 : prev
+          prev < suggestions.length - 1 ? prev + 1 : prev,
         );
         break;
       case "ArrowUp":
@@ -175,13 +175,13 @@ export function AddressAutocomplete({
         autoComplete="off"
       />
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute z-50 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1">
+        <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-black shadow-lg">
           {suggestions.map((suggestion, index) => (
             <div
               key={suggestion.place_id}
               className={cn(
-                "px-4 py-2 cursor-pointer",
-                selectedIndex === index ? "bg-gray-100" : "hover:bg-gray-50"
+                "cursor-pointer px-4 py-2",
+                selectedIndex === index ? "bg-neutral-200" : "hover:bg-gray-50",
               )}
               onClick={() => handleSuggestionSelect(suggestion.place_id)}
             >

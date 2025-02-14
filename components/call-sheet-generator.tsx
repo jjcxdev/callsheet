@@ -1,71 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputForm from "@/components/input-form";
 import CallSheetPreview from "@/components/call-sheet-preview";
-import { format } from "date-fns";
 import { WeatherData } from "@/types";
+import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { Moon, Sun } from "lucide-react";
+import { InputFormProps } from "@/types";
 
-interface CallSheetData {
-  productionName: string;
-  date: Date | undefined;
-  dayofdays: Array<{ dayOf: number; days: number }>;
-  callTime: string;
-  syncMOS: string;
-  jobName: string;
-  camera: string;
-  setCellContact: string;
-  setCellNumber: string;
-  setCellPosition: string;
-  crewCallTime: string;
-  prodcoName: string;
-  prodcoAddress: string;
-  department: Array<{ department: string }>;
-  clientLogo: string | null;
-  agencyLogo: string | null;
-  productionLogo: string | null;
-  location: Array<{
-    name: string;
-    address: string;
-    phoneNumber: string;
-    coordinates?: {
-      lat: number;
-      lng: number;
-    };
-  }>;
-  hospital: Array<{ name: string; address: string; phoneNumber: string }>;
-  director: string;
-  executiveProducer: string;
-  lineProducer: string;
-  cast: Array<{ name: string; character: string; callTime: string }>;
-  crew: Array<{
-    department: string;
-    name: string;
-    position: string;
-    contact: string;
-    email: string;
-    loc: string;
-    callTime: string;
-  }>;
-  weather?: WeatherData;
-}
 export default function CallSheetGenerator() {
-  const [callSheetData, setCallSheetData] = useState<CallSheetData>({
+  const [theme, setTheme] = useState("light");
+  const [callSheetData, setCallSheetData] = useState<InputFormProps["data"]>({
     productionName: "",
     date: undefined as Date | undefined,
-    dayofdays: [{ dayOf: 0, days: 0 }],
+    dayofdays: [],
     callTime: "",
+    docketNumber: "",
     syncMOS: "",
     jobName: "",
+    notes: [{ note: "" }],
     camera: "",
+    vendor: [{ dept: "", name: "", contact: "" }],
     crewCallTime: "",
-    department: [{ department: "" }],
+    department: [{ department: "", walkies: 0 }],
     prodcoName: "",
     prodcoAddress: "",
+    productionEmail: "",
     clientLogo: null,
+    openWalkies: 0,
     agencyLogo: null,
     productionLogo: null,
     setCellContact: "",
+    showWalkies: false,
+    showInvoice: false,
     setCellNumber: "",
     setCellPosition: "",
     location: [
@@ -75,13 +42,13 @@ export default function CallSheetGenerator() {
     director: "",
     executiveProducer: "",
     lineProducer: "",
-    cast: [{ name: "", character: "", callTime: "" }],
+    talent: [{ name: "", role: "", callTime: "" }],
     crew: [
       {
         department: "",
         name: "",
         position: "",
-        contact: "",
+        cell: "",
         email: "",
         loc: "",
         callTime: "",
@@ -89,6 +56,14 @@ export default function CallSheetGenerator() {
     ],
     weather: undefined,
   });
+
+  const handleThemeChange = (value: string) => {
+    setTheme(value || "light");
+
+    const htmlElement = document.documentElement;
+    htmlElement.classList.remove("light", "dark");
+    htmlElement.classList.add(value || "light");
+  };
 
   const handleInputChange = (newData: Partial<typeof callSheetData>) => {
     console.log("CallSheetGenerator - Received new data:", newData);
@@ -104,19 +79,39 @@ export default function CallSheetGenerator() {
     handleInputChange({
       department: [
         ...callSheetData.department,
-        { department: `Department ${newDepartmentNumber}` },
+        { department: `Department ${newDepartmentNumber}`, walkies: 0 },
       ],
     });
   };
 
+  useEffect(() => {
+    const htmlElement = document.documentElement;
+    htmlElement.classList.remove("light", "dark");
+    htmlElement.classList.add(theme);
+  }, [theme]);
+
   return (
-    <div className="h-full flex flex-col lg:flex-row">
-      <div className="w-full lg:w-1/3 p-4 overflow-y-auto">
-        <h1 className="text-2xl font-bold mb-4">Call Sheet Generator</h1>
+    <div className="flex h-full flex-col lg:flex-row">
+      <div className="w-full overflow-y-auto p-4 lg:w-1/2">
+        <div className="flex w-full justify-between">
+          <h1 className="mb-4 text-2xl font-bold">Call Sheet Generator</h1>
+          <ToggleGroup
+            type="single"
+            value={theme}
+            onValueChange={handleThemeChange}
+          >
+            <ToggleGroupItem aria-label="Light" value="light">
+              <Sun className="h-4 w-4" />
+            </ToggleGroupItem>
+            <ToggleGroupItem aria-label="Dark" value="dark">
+              <Moon className="h-4 w-4" />
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
         <InputForm data={callSheetData} onChange={handleInputChange} />
       </div>
-      <div className="w-full lg:w-2/3 bg-gray-100 overflow-y-auto">
-        <CallSheetPreview data={callSheetData} />
+      <div className="w-full overflow-y-auto bg-neutral-200 dark:bg-neutral-900 lg:w-1/2">
+        <CallSheetPreview data={callSheetData} onChange={handleInputChange} />
       </div>
     </div>
   );
