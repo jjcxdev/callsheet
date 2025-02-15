@@ -35,7 +35,7 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
           <div className="flex w-2/3 flex-col gap-2">
             {/* Date */}
 
-            <Label className="block truncate" htmlFor="date">
+            <Label className="block truncate font-light" htmlFor="date">
               Date
             </Label>
             <Popover>
@@ -43,7 +43,7 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "w-full justify-start rounded-sm py-2 text-left font-normal",
+                    "w-full justify-start bg-input py-2 text-left font-normal",
                     !data.date && "text-muted-foreground",
                   )}
                 >
@@ -69,7 +69,7 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
           {/* Call Time */}
 
           <div className="flex w-2/12 flex-col gap-2">
-            <Label className="block truncate" htmlFor="callTime">
+            <Label className="block truncate font-light" htmlFor="callTime">
               Call Time
             </Label>
             <Input
@@ -87,7 +87,7 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
           {/* Crew Call Time */}
 
           <div className="flex w-2/12 flex-col gap-2">
-            <Label className="block truncate" htmlFor="crewCallTime">
+            <Label className="block truncate font-light" htmlFor="crewCallTime">
               Crew Call
             </Label>
             <Input
@@ -117,7 +117,10 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
           {/* Set Cell Contact */}
 
           <div className="flex w-1/3 flex-col gap-2">
-            <Label className="block truncate" htmlFor="setCellContact">
+            <Label
+              className="block truncate font-light"
+              htmlFor="setCellContact"
+            >
               Set Cell Contact
             </Label>
             <Input
@@ -131,7 +134,10 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
           {/* Set Cell Position */}
 
           <div className="flex w-1/3 flex-col gap-2">
-            <Label className="block truncate" htmlFor="setCellPosition">
+            <Label
+              className="block truncate font-light"
+              htmlFor="setCellPosition"
+            >
               Set Cell Position
             </Label>
             <Input
@@ -145,7 +151,10 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
           {/* Set Cell Number */}
 
           <div className="flex w-1/3 flex-col gap-2">
-            <Label className="block truncate" htmlFor="setCellNumber">
+            <Label
+              className="block truncate font-light"
+              htmlFor="setCellNumber"
+            >
               Set Cell Number
             </Label>
             <Input
@@ -163,9 +172,14 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
           {/* Location */}
 
           <div className="flex w-full flex-col gap-2">
-            <Label htmlFor="location">Location</Label>
+            <Label className="font-light" htmlFor="location">
+              Location
+            </Label>
             {data.location.map((location, index) => (
-              <div key={index} className="flex items-center gap-2">
+              <div
+                key={index}
+                className="group relative flex items-center gap-2"
+              >
                 <div className="flex-1">
                   <AddressAutocomplete
                     id={`location-${index}-address`}
@@ -189,13 +203,16 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
                   />
                 </div>
                 {index > 0 && (
-                  <Button
-                    className="w-fit"
-                    type="button"
-                    onClick={() => deleteLocation(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
+                  <div className="absolute -right-2 -top-2 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                    <Button
+                      type="button"
+                      className="h-fit w-fit rounded-full p-0.5"
+                      variant="destructive"
+                      onClick={() => deleteLocation(index)}
+                    >
+                      <X className="h-1 w-1" />
+                    </Button>
+                  </div>
                 )}
               </div>
             ))}
@@ -206,9 +223,14 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
 
           {/* Hospital */}
           <div className="flex w-full flex-col gap-2">
-            <Label htmlFor="location">Hospital</Label>
+            <Label className="font-light" htmlFor="location">
+              Hospital
+            </Label>
             {data.hospital.map((hospital, index) => (
-              <div key={index} className="flex items-center gap-2">
+              <div
+                key={index}
+                className="group relative flex items-center gap-2"
+              >
                 <div className="flex-1">
                   <AddressAutocomplete
                     id={`hospital-${index}-address`}
@@ -232,13 +254,16 @@ export function LocationWeather({ data, onChange }: InputFormProps) {
                   />
                 </div>
                 {index > 0 && (
-                  <Button
-                    className="w-fit"
-                    type="button"
-                    onClick={() => deleteHospital(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
+                  <div className="absolute -right-2 -top-2 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                    <Button
+                      type="button"
+                      className="h-fit w-fit rounded-full p-0.5"
+                      variant="destructive"
+                      onClick={() => deleteHospital(index)}
+                    >
+                      <X className="h-1 w-1" />
+                    </Button>
+                  </div>
                 )}
               </div>
             ))}

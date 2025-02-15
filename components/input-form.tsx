@@ -27,27 +27,29 @@ export default function InputForm({ data, onChange }: InputFormProps) {
           <TabsTrigger value="vendors">Vendors</TabsTrigger>
           <TabsTrigger value="notes">Notes</TabsTrigger>
         </TabsList>
-        <TabsContent value="production">
-          <Production data={data} onChange={onChange} />
-        </TabsContent>
-        <TabsContent value="location-weather">
-          <LocationWeather data={data} onChange={onChange} />
-        </TabsContent>
-        <TabsContent value="departments">
-          <Departments data={data} onChange={onChange} />
-        </TabsContent>
-        <TabsContent value="crew">
-          <Crew data={data} onChange={onChange} />
-        </TabsContent>
-        <TabsContent value="talent">
-          <Talent data={data} onChange={onChange} />
-        </TabsContent>
-        <TabsContent value="vendors">
-          <Vendors data={data} onChange={onChange} />
-        </TabsContent>
-        <TabsContent value="notes">
-          <Notes data={data} onChange={onChange} />
-        </TabsContent>
+        <div className="mt-4 w-full rounded-lg border border-border p-8">
+          <TabsContent value="production">
+            <Production data={data} onChange={onChange} />
+          </TabsContent>
+          <TabsContent value="location-weather">
+            <LocationWeather data={data} onChange={onChange} />
+          </TabsContent>
+          <TabsContent value="departments">
+            <Departments data={data} onChange={onChange} />
+          </TabsContent>
+          <TabsContent value="crew">
+            <Crew data={data} onChange={onChange} />
+          </TabsContent>
+          <TabsContent value="talent">
+            <Talent data={data} onChange={onChange} />
+          </TabsContent>
+          <TabsContent value="vendors">
+            <Vendors data={data} onChange={onChange} />
+          </TabsContent>
+          <TabsContent value="notes">
+            <Notes data={data} onChange={onChange} />
+          </TabsContent>
+        </div>
       </Tabs>
     </div>
   );

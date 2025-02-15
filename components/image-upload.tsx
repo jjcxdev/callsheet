@@ -44,8 +44,8 @@ export function ImageUpload({ id, label, value, onChange }: ImageUploadProps) {
 
   return (
     <div className="space-y-2">
-      <div className="w-full overflow-hidden">
-        <Label htmlFor={id} className="block truncate">
+      <div className="w-full">
+        <Label htmlFor={id} className="block truncate pb-1 font-light">
           {label}
         </Label>
       </div>

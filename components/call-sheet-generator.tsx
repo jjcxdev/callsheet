@@ -3,8 +3,8 @@
 import { useEffect, useState, useRef } from "react";
 import InputForm from "@/components/input-form";
 import CallSheetPreview from "@/components/call-sheet-preview";
-import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
-import { Moon, Printer, RotateCcw, Save, Sun } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Moon, RotateCcw, Save, Sun } from "lucide-react";
 import { InputFormProps } from "@/types";
 import {
   Tooltip,
@@ -13,6 +13,9 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import { useReactToPrint } from "react-to-print";
+import { handleThemeChange, handleInputChange } from "@/constants/ui";
+import { Separator } from "@/components/ui/separator";
+import { Footer } from "@/components/footer";
 
 const STORAGE_KEY = "callsheet_data";
 
@@ -99,6 +102,13 @@ export default function CallSheetGenerator() {
     `,
   });
 
+  const handleReset = () => {
+    // Clear the localStorage item
+    localStorage.removeItem(STORAGE_KEY);
+    // Reset the call sheet data to the default state
+    setCallSheetData(defaultState);
+  };
+
   // Handle initial load from localStorage
   useEffect(() => {
     setIsClient(true);
@@ -117,20 +127,8 @@ export default function CallSheetGenerator() {
     }
   }, []);
 
-  const handleThemeChange = (value: string) => {
-    setTheme(value || "light");
-
-    const htmlElement = document.documentElement;
-    htmlElement.classList.remove("light", "dark");
-    htmlElement.classList.add(value || "light");
-  };
-
-  const handleInputChange = (newData: Partial<typeof callSheetData>) => {
-    setCallSheetData((prevData) => {
-      const updatedData = { ...prevData, ...newData };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData));
-      return updatedData;
-    });
+  const handleThemeUpdate = (value: string) => {
+    handleThemeChange(value, setTheme);
   };
 
   useEffect(() => {
@@ -168,77 +166,85 @@ export default function CallSheetGenerator() {
   }
 
   return (
-    <div className="flex h-full flex-col lg:flex-row">
-      <div className="w-full overflow-y-auto p-4 lg:w-1/2">
-        <div className="mb-4 flex w-full justify-between">
-          <h1 className="text-2xl font-bold">Call Sheet Generator</h1>
+    <div className="flex h-screen flex-col">
+      <div className="flex flex-1 flex-col overflow-hidden p-4 dark:bg-secondary lg:flex-row">
+        <div className="flex h-full w-full flex-col overflow-hidden rounded-lg bg-secondary p-8 dark:bg-background lg:w-1/2">
+          <div className="mb-8 flex w-full justify-between">
+            <h1 className="text-2xl font-bold">Call Sheet Generator</h1>
+            <div className="flex items-center gap-2">
+              {/* Save, Reset and Print */}
+              <TooltipProvider>
+                <ToggleGroup type="single" value="" onValueChange={() => {}}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <ToggleGroupItem
+                        aria-label="Save"
+                        value="save"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePrint();
+                        }}
+                      >
+                        <Save className="h-4 w-4" />
+                      </ToggleGroupItem>
+                    </TooltipTrigger>
+                    <TooltipContent>Save</TooltipContent>
+                  </Tooltip>
 
-          {/* Save, Reset and Print */}
-          <TooltipProvider>
-            <ToggleGroup type="single" value="" onValueChange={() => {}}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <ToggleGroupItem
-                    aria-label="Save"
-                    value="save"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePrint();
-                    }}
-                  >
-                    <Save className="h-4 w-4" />
-                  </ToggleGroupItem>
-                </TooltipTrigger>
-                <TooltipContent>Save</TooltipContent>
-              </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <ToggleGroupItem
+                        aria-label="Reset"
+                        value="reset"
+                        onClick={handleReset}
+                      >
+                        <RotateCcw className="h-4 w-4" />
+                      </ToggleGroupItem>
+                    </TooltipTrigger>
+                    <TooltipContent>Reset</TooltipContent>
+                  </Tooltip>
+                </ToggleGroup>
+              </TooltipProvider>
+              <Separator orientation="vertical" className="mx-2" />
+              {/* Theme Toggle */}
+              <ToggleGroup
+                type="single"
+                value={theme}
+                onValueChange={handleThemeUpdate}
+              >
+                <ToggleGroupItem aria-label="Light" value="light">
+                  <Sun className="h-4 w-4" />
+                </ToggleGroupItem>
+                <ToggleGroupItem aria-label="Dark" value="dark">
+                  <Moon className="h-4 w-4" />
+                </ToggleGroupItem>
+              </ToggleGroup>
+            </div>
+          </div>
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <ToggleGroupItem aria-label="Reset" value="reset">
-                    <RotateCcw className="h-4 w-4" />
-                  </ToggleGroupItem>
-                </TooltipTrigger>
-                <TooltipContent>Reset</TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <ToggleGroupItem aria-label="Print" value="print">
-                    <Printer className="h-4 w-4" />
-                  </ToggleGroupItem>
-                </TooltipTrigger>
-                <TooltipContent>Print</TooltipContent>
-              </Tooltip>
-            </ToggleGroup>
-          </TooltipProvider>
-
-          {/* Theme Toggle */}
-          <ToggleGroup
-            type="single"
-            value={theme}
-            onValueChange={handleThemeChange}
-          >
-            <ToggleGroupItem aria-label="Light" value="light">
-              <Sun className="h-4 w-4" />
-            </ToggleGroupItem>
-            <ToggleGroupItem aria-label="Dark" value="dark">
-              <Moon className="h-4 w-4" />
-            </ToggleGroupItem>
-          </ToggleGroup>
+          {/* Input Form */}
+          <div className="h-full overflow-y-auto">
+            <InputForm
+              data={callSheetData}
+              onChange={(newData) =>
+                handleInputChange(newData, setCallSheetData, STORAGE_KEY)
+              }
+            />
+          </div>
         </div>
 
-        {/* Input Form */}
-        <InputForm data={callSheetData} onChange={handleInputChange} />
+        {/* Preview */}
+        <div className="h-full w-full overflow-y-auto dark:bg-secondary lg:w-1/2">
+          <CallSheetPreview
+            ref={componentRef}
+            data={callSheetData}
+            onChange={(newData) =>
+              handleInputChange(newData, setCallSheetData, STORAGE_KEY)
+            }
+          />
+        </div>
       </div>
-
-      {/* Preview */}
-      <div className="w-full overflow-y-auto bg-neutral-200 dark:bg-neutral-900 lg:w-1/2">
-        <CallSheetPreview
-          ref={componentRef}
-          data={callSheetData}
-          onChange={handleInputChange}
-        />
-      </div>
+      <Footer />
     </div>
   );
 }

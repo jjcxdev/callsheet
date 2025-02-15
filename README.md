@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Call Sheet Generator
+
+A modern, web-based call sheet generator for film and television productions. Built with Next.js, TypeScript, and Tailwind CSS.
+
+## Features
+
+- 📝 Create and customize production call sheets
+- 🎭 Manage cast and crew information
+- 📍 Location management with Google Maps integration
+- 🌤️ Automatic weather forecasting for shooting locations
+- 🖨️ Print-ready call sheet formatting
+- 💾 Automatic saving of call sheet data
+- 🌓 Light/Dark mode support
+- 📱 Responsive design
+- 🎨 Logo upload capabilities for client, agency, and production companies
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [shadcn/ui](https://ui.shadcn.com/) - Re-usable components
+- [Google Maps API](https://developers.google.com/maps) - Location services
+- [Tomorrow.io API](https://www.tomorrow.io/) - Weather forecasting
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/jjcxdev/callsheet
+cd callsheet
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory with the following variables:
 
-## Learn More
+```
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+NEXT_PUBLIC_TOMORROW_API_KEY=your_tomorrow_io_api_key
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Run the development server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Deploy on Vercel
+## Features in Detail
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Production Details
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Production name and information
+- Day-of-days tracking
+- Call times management
+- Logo management for client, agency, and production
+
+### Cast & Crew Management
+
+- Department organization
+- Crew member details
+- Talent/Cast information
+- Contact information
+- Individual call times
+
+### Location Management
+
+- Multiple location support
+- Google Maps integration
+- Hospital locations
+- Weather forecasting for shooting dates
+
+### Additional Features
+
+- Walkie channel assignment
+- Notes section
+- Vendor management
+- Print-optimized layout
+- Automatic data persistence
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+Copyright (c) 2025 jjcx. All rights reserved.
+
+This software is provided for personal and non-commercial use only. Any commercial use, including but not limited to selling, licensing, or monetizing this software or derivative works, is strictly prohibited without explicit written permission from the copyright holder.
+
+You may view, fork, and modify this code for personal and educational purposes, but you may not:
+
+- Use it for commercial purposes
+- Distribute it as part of a commercial product
+- Sell or license the code or any derivative works
+- Remove or modify this copyright notice
+
+For commercial licensing inquiries, please contact j@jjcx.dev

@@ -4,6 +4,10 @@ import { UtilityProps } from "@/types";
 
 let utilityContext: UtilityProps;
 
+// --------
+// Core Utilities
+// --------
+
 export const initializeUtils = (props: UtilityProps) => {
   utilityContext = props;
 };
@@ -21,41 +25,55 @@ export const filterAllowedCharacters = (value: string) => {
   return value.replace(/[^0-9OC/]/gi, "");
 };
 
-export const updateLocation = (index: number, field: string, value: any) => {
-  console.log("InputForm - updateLocation:", { index, field, value });
-  const newLocation = [...utilityContext.data.location];
-  newLocation[index] = { ...newLocation[index], [field]: value };
-  console.log("InputForm - newLocation:", newLocation);
-  utilityContext.onChange({ location: newLocation });
+export const handleThemeChange = (
+  theme: string,
+  setTheme: (value: string) => void,
+) => {
+  setTheme(theme || "light");
+  const htmlElement = document.documentElement;
+  htmlElement.classList.remove("light", "dark");
+  htmlElement.classList.add(theme || "light");
 };
 
-export const handleDayOfDaysChange = (
-  field: "dayOf" | "days",
-  value: string,
+export const handleInputChange = (
+  newData: Partial<InputFormProps["data"]>,
+  setCallSheetData: React.Dispatch<
+    React.SetStateAction<InputFormProps["data"]>
+  >,
+  storageKey: string,
 ) => {
-  let newDayofdays = [...utilityContext.data.dayofdays];
-  const numValue = parseInt(value) || 0;
+  setCallSheetData((prevData) => {
+    const updatedData = { ...prevData, ...newData };
+    localStorage.setItem(storageKey, JSON.stringify(updatedData));
+    return updatedData;
+  });
+};
 
-  if (newDayofdays.length === 0) {
-    newDayofdays = [{ dayOf: 0, days: 0 }];
-  }
+// --------
+// Time and Weather
+// --------
 
-  if (field === "dayOf") {
-    if (newDayofdays[0].days > 0) {
-      newDayofdays[0] = {
-        ...newDayofdays[0],
-        dayOf: Math.min(numValue, newDayofdays[0].days),
-      };
+export const handleTimeChange = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  field: string,
+  index?: number,
+) => {
+  const { value } = e.target;
+  const filteredValue = filterAllowedCharacters(value);
+
+  if (index !== undefined) {
+    if (field === "cast") {
+      const newCast = [...utilityContext.data.talent];
+      newCast[index] = { ...newCast[index], callTime: filteredValue };
+      utilityContext.onChange({ talent: newCast });
+    } else if (field === "crew") {
+      const newCrew = [...utilityContext.data.crew];
+      newCrew[index] = { ...newCrew[index], callTime: filteredValue };
+      utilityContext.onChange({ crew: newCrew });
     }
-  } else if (field === "days") {
-    newDayofdays[0] = {
-      ...newDayofdays[0],
-      days: numValue,
-      dayOf: numValue > 0 ? 1 : 0,
-    };
+  } else {
+    utilityContext.onChange({ [field]: filteredValue });
   }
-
-  utilityContext.onChange({ dayofdays: newDayofdays });
 };
 
 export const handleWeatherUpdate = async () => {
@@ -143,63 +161,17 @@ export const handleWeatherUpdate = async () => {
   }
 };
 
-export const handleTimeChange = (
-  e: React.ChangeEvent<HTMLInputElement>,
-  field: string,
-  index?: number,
-) => {
-  const { value } = e.target;
-  const filteredValue = filterAllowedCharacters(value);
-
-  if (index !== undefined) {
-    if (field === "cast") {
-      const newCast = [...utilityContext.data.talent];
-      newCast[index] = { ...newCast[index], callTime: filteredValue };
-      utilityContext.onChange({ talent: newCast });
-    } else if (field === "crew") {
-      const newCrew = [...utilityContext.data.crew];
-      newCrew[index] = { ...newCrew[index], callTime: filteredValue };
-      utilityContext.onChange({ crew: newCrew });
-    }
-  } else {
-    utilityContext.onChange({ [field]: filteredValue });
-  }
-};
-
 // --------
-// Departments
+// Location and Hospital
 // --------
 
-export const addDepartment = () => {
-  utilityContext.onChange({
-    department: [
-      ...utilityContext.data.department,
-      { department: "", walkies: 0 },
-    ],
-  });
+export const updateLocation = (index: number, field: string, value: any) => {
+  console.log("InputForm - updateLocation:", { index, field, value });
+  const newLocation = [...utilityContext.data.location];
+  newLocation[index] = { ...newLocation[index], [field]: value };
+  console.log("InputForm - newLocation:", newLocation);
+  utilityContext.onChange({ location: newLocation });
 };
-
-export const updateDepartment = (index: number, value: string) => {
-  const newDepartment = [...utilityContext.data.department];
-  newDepartment[index] = { department: value, walkies: 0 };
-  utilityContext.onChange({ department: newDepartment });
-};
-
-export const deleteDepartment = (index: number) => {
-  const newDepartment = [...utilityContext.data.department];
-  newDepartment.splice(index, 1);
-  utilityContext.onChange({ department: newDepartment });
-};
-
-export const updateWalkies = (index: number, value: string) => {
-  const newDepartment = [...utilityContext.data.department];
-  newDepartment[index] = { ...newDepartment[index], walkies: parseInt(value) };
-  utilityContext.onChange({ department: newDepartment });
-};
-
-// --------
-// Location
-// --------
 
 export const addLocation = () => {
   utilityContext.onChange({
@@ -237,6 +209,70 @@ export const deleteHospital = (index: number) => {
 };
 
 // --------
+// Day Management
+// --------
+
+export const handleDayOfDaysChange = (
+  field: "dayOf" | "days",
+  value: string,
+) => {
+  let newDayofdays = [...utilityContext.data.dayofdays];
+  const numValue = parseInt(value) || 0;
+
+  if (newDayofdays.length === 0) {
+    newDayofdays = [{ dayOf: 0, days: 0 }];
+  }
+
+  if (field === "dayOf") {
+    if (newDayofdays[0].days > 0) {
+      newDayofdays[0] = {
+        ...newDayofdays[0],
+        dayOf: Math.min(numValue, newDayofdays[0].days),
+      };
+    }
+  } else if (field === "days") {
+    newDayofdays[0] = {
+      ...newDayofdays[0],
+      days: numValue,
+      dayOf: numValue > 0 ? 1 : 0,
+    };
+  }
+
+  utilityContext.onChange({ dayofdays: newDayofdays });
+};
+
+// --------
+// Departments
+// --------
+
+export const addDepartment = () => {
+  utilityContext.onChange({
+    department: [
+      ...utilityContext.data.department,
+      { department: "", walkies: 0 },
+    ],
+  });
+};
+
+export const updateDepartment = (index: number, value: string) => {
+  const newDepartment = [...utilityContext.data.department];
+  newDepartment[index] = { department: value, walkies: 0 };
+  utilityContext.onChange({ department: newDepartment });
+};
+
+export const deleteDepartment = (index: number) => {
+  const newDepartment = [...utilityContext.data.department];
+  newDepartment.splice(index, 1);
+  utilityContext.onChange({ department: newDepartment });
+};
+
+export const updateWalkies = (index: number, value: string) => {
+  const newDepartment = [...utilityContext.data.department];
+  newDepartment[index] = { ...newDepartment[index], walkies: parseInt(value) };
+  utilityContext.onChange({ department: newDepartment });
+};
+
+// --------
 // Crew
 // --------
 
@@ -248,7 +284,7 @@ export const addCrewMember = () => {
         department: "",
         name: "",
         position: "",
-        contact: "",
+        cell: "",
         email: "",
         loc: "",
         callTime: "",

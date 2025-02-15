@@ -6,14 +6,6 @@ import { InputFormProps } from "@/types";
 import { initializeUtils } from "@/constants/ui";
 import { Separator } from "./ui/separator";
 
-function formatDate(dateString: string): string {
-  return dateString;
-}
-
-function formatTime(timeString: string): string {
-  return timeString;
-}
-
 const CallSheetPreview = React.forwardRef<HTMLDivElement, InputFormProps>(
   ({ data, onChange }, ref) => {
     initializeUtils({ data, onChange });
@@ -27,7 +19,7 @@ const CallSheetPreview = React.forwardRef<HTMLDivElement, InputFormProps>(
       <div className="flex h-full items-center justify-center">
         <div
           ref={ref}
-          className="call-sheet-preview bg-white font-oswald"
+          className="call-sheet-preview border border-gray-200 bg-white font-oswald text-black shadow-lg print:border-0 print:shadow-none"
           style={{
             aspectRatio: "0.7727272727272727",
             width:
@@ -39,7 +31,7 @@ const CallSheetPreview = React.forwardRef<HTMLDivElement, InputFormProps>(
             padding: "0.35in",
           }}
         >
-          <div className="text-callsheet h-full w-full border border-black uppercase">
+          <div className="h-full w-full border border-black text-callsheet uppercase">
             {/* Date Block */}
             <div className="h-2 w-full border-b border-black bg-neutral-200"></div>
             <div className="flex w-full">
@@ -316,7 +308,10 @@ const CallSheetPreview = React.forwardRef<HTMLDivElement, InputFormProps>(
                   >
                     {data.setCellContact || "Set Cell Contact"}
                   </div>
-                  <Separator orientation="vertical" className="mx-1 h-full" />
+                  <Separator
+                    orientation="vertical"
+                    className="mx-1 h-full bg-neutral-200"
+                  />
                   <div
                     className={`${data.setCellPosition ? "" : "bg-red-200 text-red-600"}`}
                   >
@@ -344,7 +339,7 @@ const CallSheetPreview = React.forwardRef<HTMLDivElement, InputFormProps>(
                       {loc.address || "location address"}
                     </div>
                     {index < data.location.length - 1 && (
-                      <div className="my-1 border-b border-border" />
+                      <div className="my-1 border-b border-neutral-200" />
                     )}
                   </div>
                 ))}
@@ -369,7 +364,7 @@ const CallSheetPreview = React.forwardRef<HTMLDivElement, InputFormProps>(
                       {hosp.phoneNumber || "hospital phone number"}
                     </div>
                     {index < data.hospital.length - 1 && (
-                      <div className="my-1 border-b border-border" />
+                      <div className="my-1 border-b border-neutral-200" />
                     )}
                   </div>
                 ))}
@@ -593,5 +588,7 @@ const CallSheetPreview = React.forwardRef<HTMLDivElement, InputFormProps>(
     );
   },
 );
+
+CallSheetPreview.displayName = "CallSheetPreview";
 
 export default CallSheetPreview;

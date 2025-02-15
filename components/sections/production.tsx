@@ -22,7 +22,10 @@ export function Production({ data, onChange }: InputFormProps) {
           {/* Production Name */}
 
           <div className="flex w-1/3 flex-col gap-2">
-            <Label className="block truncate" htmlFor="productionName">
+            <Label
+              className="block truncate font-light"
+              htmlFor="productionName"
+            >
               Production Name
             </Label>
             <Input
@@ -35,7 +38,9 @@ export function Production({ data, onChange }: InputFormProps) {
 
           {/* Job Name */}
           <div className="flex w-1/3 flex-col gap-2">
-            <Label htmlFor="jobName">Job Name</Label>
+            <Label className="block truncate font-light" htmlFor="jobName">
+              Job Name
+            </Label>
             <Input
               id="jobName"
               name="jobName"
@@ -47,7 +52,7 @@ export function Production({ data, onChange }: InputFormProps) {
           {/* Docket Number */}
 
           <div className="flex w-1/3 flex-col gap-2">
-            <Label className="block truncate" htmlFor="docketNumber">
+            <Label className="block truncate font-light" htmlFor="docketNumber">
               Docket Number
             </Label>
             <Input
@@ -64,8 +69,10 @@ export function Production({ data, onChange }: InputFormProps) {
         <div className="flex gap-2">
           {/* Production Company */}
 
-          <div className="flex w-6/12 flex-col gap-2">
-            <Label htmlFor="prodcoName">Production Company</Label>
+          <div className="flex w-5/12 flex-col gap-2">
+            <Label className="block truncate font-light" htmlFor="prodcoName">
+              Production Company
+            </Label>
             <div className="w-full">
               <AddressAutocomplete
                 id="prodcoAddress"
@@ -90,59 +97,68 @@ export function Production({ data, onChange }: InputFormProps) {
           </div>
 
           {/* Director */}
-
-          <div className="flex w-2/12 flex-col gap-2">
-            <div className="w-full">
-              <Label className="block truncate" htmlFor="director">
-                Director
-              </Label>
+          <div className="flex w-7/12 gap-2">
+            <div className="flex w-1/3 flex-col gap-2">
+              <div className="w-full">
+                <Label className="block truncate font-light" htmlFor="director">
+                  Director
+                </Label>
+              </div>
+              <Input
+                id="director"
+                name="director"
+                value={data.director}
+                onChange={handleChange}
+              />
             </div>
-            <Input
-              id="director"
-              name="director"
-              value={data.director}
-              onChange={handleChange}
-            />
-          </div>
 
-          {/* Executive Producer */}
+            {/* Executive Producer */}
 
-          <div className="flex w-2/12 flex-col gap-2">
-            <div className="w-full">
-              <Label className="block truncate" htmlFor="executiveProducer">
-                Executive Producer
-              </Label>
+            <div className="flex w-1/3 flex-col gap-2">
+              <div className="w-full">
+                <Label
+                  className="block truncate font-light"
+                  htmlFor="executiveProducer"
+                >
+                  Executive Producer
+                </Label>
+              </div>
+              <Input
+                id="executiveProducer"
+                name="executiveProducer"
+                value={data.executiveProducer}
+                onChange={handleChange}
+              />
             </div>
-            <Input
-              id="executiveProducer"
-              name="executiveProducer"
-              value={data.executiveProducer}
-              onChange={handleChange}
-            />
-          </div>
 
-          {/* Line Producer */}
+            {/* Line Producer */}
 
-          <div className="flex w-2/12 flex-col gap-2">
-            <div className="w-full">
-              <Label className="block truncate" htmlFor="lineProducer">
-                Line Producer
-              </Label>
+            <div className="flex w-1/3 flex-col gap-2">
+              <div className="w-full">
+                <Label
+                  className="block truncate font-light"
+                  htmlFor="lineProducer"
+                >
+                  Line Producer
+                </Label>
+              </div>
+              <Input
+                id="lineProducer"
+                name="lineProducer"
+                value={data.lineProducer}
+                onChange={handleChange}
+              />
             </div>
-            <Input
-              id="lineProducer"
-              name="lineProducer"
-              value={data.lineProducer}
-              onChange={handleChange}
-            />
           </div>
         </div>
 
         <div className="flex gap-2">
           {/* Camera */}
 
-          <div className="flex w-4/12 flex-col gap-2">
-            <Label htmlFor="camera">Camera</Label>
+          <div className="flex w-3/12 flex-col gap-2">
+            <Label className="block truncate font-light" htmlFor="camera">
+              Camera
+            </Label>
             <Input
               id="camera"
               name="camera"
@@ -154,7 +170,9 @@ export function Production({ data, onChange }: InputFormProps) {
           {/* Sync/MOS */}
 
           <div className="flex w-3/12 flex-col gap-2">
-            <Label htmlFor="syncMOS">Sync/MOS</Label>
+            <Label className="block truncate font-light" htmlFor="syncMOS">
+              Sync/MOS
+            </Label>
             <Select
               name="syncMOS"
               value={data.syncMOS}
@@ -173,7 +191,7 @@ export function Production({ data, onChange }: InputFormProps) {
           {/* Day of Days */}
 
           <div className="flex w-3/12 flex-col gap-2">
-            <Label className="block truncate" htmlFor="dayOfDays">
+            <Label className="block truncate font-light" htmlFor="dayOfDays">
               Day of Days
             </Label>
             <div className="flex gap-1">
@@ -199,8 +217,11 @@ export function Production({ data, onChange }: InputFormProps) {
 
           {/* Invoice Email */}
 
-          <div className="flex w-full flex-col gap-2">
-            <Label className="block truncate" htmlFor="productionEmail">
+          <div className="flex w-5/12 flex-col gap-2">
+            <Label
+              className="block truncate font-light"
+              htmlFor="productionEmail"
+            >
               Invoice Email
             </Label>
             <Input
@@ -219,7 +240,9 @@ export function Production({ data, onChange }: InputFormProps) {
               checked={data.showInvoice}
               onCheckedChange={(checked) => onChange({ showInvoice: checked })}
             />
-            <Label htmlFor="showInvoice">Invoice Info</Label>
+            <Label className="block truncate font-light" htmlFor="showInvoice">
+              Invoice Info
+            </Label>
           </div>
         </div>
 
